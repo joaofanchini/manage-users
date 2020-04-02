@@ -1,0 +1,32 @@
+server:
+  port: 8082
+
+info:
+  build:
+    name: web-crud
+    description: Demo project for Spring Boot
+    artifact: web-crud
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+  output:
+    ansi:
+      enabled: ALWAYS
+
+logging:
+  level:
+    root: ERROR
+    com:
+      training:
+        webcrud: DEBUG
