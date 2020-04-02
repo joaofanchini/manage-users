@@ -1,16 +1,19 @@
 package com.training.webcrud.config;
 
-import com.training.webcrud.config.controllers.IndexController;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -44,9 +47,10 @@ public class WebConfig implements WebMvcConfigurer {
         return classLoaderTemplateResolver;
     }
 
+
     @Bean
     @Description("Adicionando resolver de template à engine do Spring")
-    public SpringTemplateEngine springTemplateEngine(){
+    public SpringTemplateEngine springTemplateEngine() {
         SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
         springTemplateEngine.setTemplateResolver(templateResolver());
 
@@ -55,7 +59,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     @Description("Adicionando configuração da engine de template ao thymeleaf")
-    public ViewResolver viewResolver(){
+    public ViewResolver viewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         thymeleafViewResolver.setTemplateEngine(springTemplateEngine());
@@ -66,11 +70,23 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     @Description("Configuração para o uso de internacionalização. Pega o locale através do " +
             "envio do header Accept-Language")
-    public LocaleResolver resolver() {
+    public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver acceptHeaderLocaleResolver = new AcceptHeaderLocaleResolver();
         acceptHeaderLocaleResolver.setDefaultLocale(new Locale("pt_BR"));
 
         return acceptHeaderLocaleResolver;
+    }
+
+    @Bean
+    @Description("Configuração do Message source. Importante notar o FallBackToSystemLocal está como false," +
+            "assim ele pega o que vem da requisição")
+    public MessageSource bundleMessageSource() {
+        ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+        resourceBundleMessageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        resourceBundleMessageSource.setBasename("messages");
+        resourceBundleMessageSource.setFallbackToSystemLocale(false);
+
+        return resourceBundleMessageSource;
     }
 
     @Override
@@ -83,7 +99,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
+    @Description("Apenas para fins de testes de configuração foi adicionado a rota index")
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
     }
+
 }
