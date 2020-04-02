@@ -14,9 +14,10 @@ spring:
     username: sa
     password: password
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   h2:
     console:
       enabled: true
@@ -26,7 +27,6 @@ spring:
 
 logging:
   level:
-    root: ERROR
     com:
       training:
-        webcrud: DEBUG
+        webcrud: TRACE
