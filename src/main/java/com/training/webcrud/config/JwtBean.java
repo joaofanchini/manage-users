@@ -10,7 +10,7 @@ import java.util.Calendar;
 @Component
 public class JwtBean {
 
-    @Value("${jwt.expire}")
+    @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.minutesToExpire}")
     private Integer minutesToExpire;
