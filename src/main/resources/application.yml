@@ -30,3 +30,7 @@ logging:
     com:
       training:
         webcrud: TRACE
+
+jwt:
+  secret: TESTE
+  minutesToExpire: 5
