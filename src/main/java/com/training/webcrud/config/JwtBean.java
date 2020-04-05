@@ -33,7 +33,7 @@ public class JwtBean {
                 .parse(token)
                 .getBody();
 
-        return claims != null;
+        return true;
     }
 
 }

@@ -24,21 +24,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorization = httpServletRequest.getHeader("Authorization");
         if (authorization == null)
-            throw new ForbiddenException("validation.notHaveAuthorizationHeader");
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        else {
+            if (authorization.isEmpty() || authorization.length() < PREFIX.length())
+                throw new ForbiddenException("validation.notHavePrefixAuthorizationHeader");
 
-        if (authorization.isEmpty() || authorization.length() < PREFIX.length())
-            throw new ForbiddenException("validation.notHavePrefixAuthorizationHeader");
+            String prefixAuthorizationHeader = authorization.substring(0, PREFIX.length()).trim();
+            if (prefixAuthorizationHeader.equals(PREFIX))
+                throw new ForbiddenException("validation.invalidPrefixHeader");
 
-        String prefixAuthorizationHeader = authorization.substring(0, PREFIX.length()).trim();
-        if (prefixAuthorizationHeader.equals(PREFIX))
-            throw new ForbiddenException("validation.invalidPrefixHeader");
+            String token = authorization.substring(PREFIX.length());
 
-        String token = authorization.substring(PREFIX.length());
+            if (!jwtBean.validateToken(token))
+                throw new ForbiddenException("validation.invalidToken");
 
-        if (!jwtBean.validateToken(token))
-            throw new ForbiddenException("validation.invalidToken");
-
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        }
 
     }
 }

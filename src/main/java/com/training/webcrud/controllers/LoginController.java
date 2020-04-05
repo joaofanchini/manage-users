@@ -1,6 +1,7 @@
 package com.training.webcrud.controllers;
 
 import com.training.webcrud.dtos.LoginDTO;
+import com.training.webcrud.dtos.LoginResponseDTO;
 import com.training.webcrud.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,8 +19,8 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity makeLogin(@Valid @RequestBody LoginDTO loginDTO){
-        loginService.login(loginDTO);
-        return ResponseEntity.ok(null);
+        LoginResponseDTO login = loginService.login(loginDTO);
+        return ResponseEntity.ok(login);
     }
 
     @GetMapping
