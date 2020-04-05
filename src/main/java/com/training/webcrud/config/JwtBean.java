@@ -1,5 +1,6 @@
 package com.training.webcrud.config;
 
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +28,12 @@ public class JwtBean {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        Object claims = Jwts.parser()
+    public Jwt validateToken(String token) {
+        Jwt parse = Jwts.parser()
                 .setSigningKey(secret)
-                .parse(token)
-                .getBody();
+                .parse(token);
 
-        return true;
+        return parse;
     }
 
 }

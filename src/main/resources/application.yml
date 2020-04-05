@@ -33,4 +33,4 @@ logging:
 
 jwt:
   secret: TESTE
-  minutesToExpire: 5
+  minutesToExpire: 99999

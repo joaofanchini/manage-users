@@ -23,7 +23,7 @@ public class LoginController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> makeLogin(@Valid @RequestBody LoginDTO loginDTO) {
-        authenticationService.authenticate(loginDTO);
+        authenticationService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
         LoginResponseDTO login = loginService.login(loginDTO);
         return ResponseEntity.ok(login);
     }
