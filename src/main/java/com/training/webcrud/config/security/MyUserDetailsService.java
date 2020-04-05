@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PrincipalService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -20,7 +20,8 @@ public class PrincipalService implements UserDetailsService {
         User user = userRepository.findById(username)
                 .orElseThrow(() -> new ForbiddenException("validation.userNotFound"));
 
-        return new Principal(user.getUsername(), user.getPassword());
+
+        return new MyUserDetails(user.getUsername(), user.getPassword());
 
     }
 }

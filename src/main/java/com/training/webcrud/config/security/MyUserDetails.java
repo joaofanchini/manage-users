@@ -7,12 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Getter
-public class Principal implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
     private String username;
     private String password;
+    private static final String PREFIX_GRANTED_AUTHORITIES = "ROLE_";
 
-    public Principal(String username, String password) {
+    public MyUserDetails(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -34,21 +35,21 @@ public class Principal implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

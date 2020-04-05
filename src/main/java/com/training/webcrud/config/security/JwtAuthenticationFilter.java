@@ -23,9 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorization = httpServletRequest.getHeader("Authorization");
-        if (authorization == null)
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-        else {
+        if (authorization != null) {
             if (authorization.isEmpty() || authorization.length() < PREFIX.length())
                 throw new ForbiddenException("validation.notHavePrefixAuthorizationHeader");
 
@@ -38,8 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (!jwtBean.validateToken(token))
                 throw new ForbiddenException("validation.invalidToken");
 
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
 
     }
 }
